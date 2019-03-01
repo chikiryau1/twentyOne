@@ -22,7 +22,7 @@ const NAME_MAP = {
 };
 
 export const getSuit = (num) => {
-    const v = num / 9;
+    const v = Math.floor(num / 9);
     return SUIT_MAP[v]
 };
 

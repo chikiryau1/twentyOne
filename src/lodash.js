@@ -1,6 +1,7 @@
-import {range, reduce} from 'lodash'
+import {range, reduce, forEach} from 'lodash'
 
 export {
     range,
-    reduce
+    reduce,
+    forEach
 }
