@@ -35,7 +35,7 @@ export function* play () {
     const p1 = new Player({name: 'Player'});
     const p2 = new Computer({name: 'Computer'});
     const deck = shuffle();
-
+    console.log(deck);
     let more = yield {
         player: {
             name: p1.name,
@@ -54,7 +54,6 @@ export function* play () {
     let count = 0;
     do{
         count++;
-        console.log(p1.lr, p2.lr);
 
         p1.more = more;
         p1.lr = p2.lr = false;

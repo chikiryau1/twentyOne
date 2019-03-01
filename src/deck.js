@@ -45,15 +45,23 @@ export const shuffle = () => {
     let permutations = 0;
 
     reduce(DECK, (i, j) => {
-        const rand = Math.floor(Math.random() * 2);
-        if (rand) {
-            permutations += 1;
-            i = i % resLen;
+        const rand = Math.floor(Math.random() * 3);
+        i = i % resLen;
+
+        if (rand === 1) {
+            const temp = result[j];
             result[j] = result[i];
-            result[i] = j;
+            result[i] = temp;
+            permutations += 1;
+        } else if (rand === 2) {
+            const temp = result[resLen - 1 - j];
+            result[resLen - 1 - j] = result[i];
+            result[i] = temp;
+            permutations += 1;
         }
         return ++i
     }, 1);
+
     return result
 };
 
