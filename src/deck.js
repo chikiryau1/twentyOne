@@ -53,4 +53,4 @@ export const shuffle = () => {
     return result
 };
 
-export default shuffle()
+export default DECK
