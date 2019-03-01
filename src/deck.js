@@ -41,9 +41,13 @@ export const getCardInfo = (num) => {
 export const shuffle = () => {
     const result = [...DECK];
     const {length: resLen} = result;
+
+    let permutations = 0;
+
     reduce(DECK, (i, j) => {
         const rand = Math.floor(Math.random() * 2);
         if (rand) {
+            permutations += 1;
             i = i % resLen;
             result[j] = result[i];
             result[i] = j;

@@ -8,23 +8,47 @@
     <title>21</title>
 </head>
 <style>
+    body{
+        height: 100vh;
+
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        margin: 0;
+        padding: 0;
+
+        font-family: Helvetica, Aria, sans-serif;
+        font-size: 20px;
+        line-height: 30px;
+    }
     .card{
-        display: inline-block;
+
+    }
+    .player{
+
+    }
+    .none{
+        opacity: 0;
+    }
+    .info{
+        font-size: 16px;
+        line-height: 20px;
     }
 </style>
 <body>
-<div id="player">
-    <div class="name"></div>
-    <div id="playerInfo"></div>
-    <div id="playerStatus"></div>
-    <button id="playerMore">More</button>
-    <button id="playerHold">Hold</button>
-</div>
+    <div id="player" class="player">
+        <div class="name"></div>
+        <div id="playerStatus"></div>
+        <button id="playerMore">More</button>
+        <button id="playerHold">Enough</button>
+        <div id="playerInfo" class="info"></div>
+    </div>
 
-<div id="computer">
-    <div class="name"></div>
-    <div id="computerInfo"></div>
-    <div id="computerStatus"></div>
-</div>
+    <div id="computer" class="player">
+        <div class="name"></div>
+        <div id="computerStatus"></div>
+        <button class="none">More</button>
+        <div id="computerInfo" class="info"></div>
+    </div>
 </body>
 </html>

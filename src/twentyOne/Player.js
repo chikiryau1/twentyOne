@@ -11,7 +11,7 @@ export default class Player{
     constructor(props) {
         const {name} = props;
         this.name = name;
-        this.leftAmount = 100;
+        this.leftAmount = 50;
         this.cards = [];
         this.more = true;
         this.score = 0;
