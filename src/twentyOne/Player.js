@@ -13,26 +13,27 @@ export default class Player{
         this.name = name;
         this.leftAmount = 100;
         this.cards = [];
+        this.more = true;
+        this.score = 0;
     }
 
     lostRound(){
-        this.lr = true;
-        this.cards = [];
-        this.leftAmount -= BET
+        console.log(this.name, ' LOST');
+        this.reset();
+        this.leftAmount -= BET;
     }
 
     wonRound(){
+        console.log(this.name, ' WON');
+        this.reset();
+        this.leftAmount += BET;
+    }
+
+    reset () {
         this.lr = false;
         this.cards = [];
-        this.leftAmount += BET
-    }
-
-    lostGame(){
-
-    }
-
-    wonGame(){
-
+        this.more = true;
+        this.score = 0;
     }
 
     sum(){
@@ -43,24 +44,19 @@ export default class Player{
     }
 
     checkCards() {
-        const sum = this.sum();
-        if(sum > 21){
-            this.lostRound();
-            return false
-        } else if(sum === 21) {
-            this.wonRound()
-        }
         return this.cards.length <= 8
     }
 
     addCard(card){
-        if(this.checkCards()){
+        this.score = this.sum();
+        if(this.more && this.checkCards()){
             const {suit, name} = getCardInfo(card);
             this.cards.push({
                 suit,
                 name,
                 value: getCardCost(card)
-            })
+            });
+            this.score = this.sum();
         }
     }
 }

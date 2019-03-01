@@ -4,58 +4,79 @@ import Computer from './Computer'
 
 const MAX_ROUNDS = 50;
 
+const checkRoundWinner = (p1, p2) => {
+    const score1 = p1.score;
+    const score2 = p2.score;
+
+    console.log(p1.score);
+    console.log(p2.score);
+    if(score1 > 21 && score2 <= 21){
+        p1.lostRound();
+        p2.wonRound();
+    } else if(score1 <= 21 && score2 > 21){
+        p2.lostRound();
+        p1.wonRound();
+    } else if(!p1.more && !p2.more) {
+        if(score1 > score2) {
+            p2.lostRound();
+            p1.wonRound();
+        } else if(score1 < score2) {
+            p1.lostRound();
+            p2.wonRound();
+        } else {
+            p1.reset();
+            p2.reset();
+            console.log('DRAW');
+        }
+    }
+};
+
 export function* play () {
-    const p1 = new Player({name: 'Donbass'});
-    const p2 = new Computer({name: 'Hohol'});
+    const p1 = new Player({name: 'Player'});
+    const p2 = new Computer({name: 'Computer'});
     const deck = shuffle();
 
     let more = yield {
         player: {
+            name: p1.name,
             cards: p1.cards,
             leftAmount: p1.leftAmount,
-            round: !p1.lr
+            score: p1.score
         },
         computer: {
+            name: p2.name,
             cards: p2.cards,
             leftAmount: p2.leftAmount,
-            round: !p2.lr
+            score: p2.score
         }
     };
 
     let count = 0;
     do{
         count++;
+        console.log(p1.lr, p2.lr);
 
-        if(more) {
+        p1.more = more;
+        p1.lr = p2.lr = false;
+
+        if(p1.more) {
             p1.addCard(deck.pop());
-            p1.checkCards()
         }
 
-        if (p1.lr){
-            p2.wonRound()
-        } else {
-            const d = p2.makeDecision();
-            d && p2.addCard(deck.pop());
+        p2.makeDecision() && p2.addCard(deck.pop());
 
-            if(p2.lr){
-                p1.wonRound()
-            }
-        }
-
-        if(!p1.lr && !p2.lr && !more && !p2.makeDecision()){
-            p1.sum() >= p2.sum() ? (p1.wonRound() && p2.lostRound()) : (p2.wonRound() && p1.lostRound())
-        }
+        checkRoundWinner(p1, p2);
 
         more = yield {
             player: {
                 cards: p1.cards,
                 leftAmount: p1.leftAmount,
-                round: !p1.lr
+                score: p1.score
             },
             computer: {
                 cards: p2.cards,
                 leftAmount: p2.leftAmount,
-                round: !p2.lr
+                score: p2.score
             }
         };
     } while(p1.leftAmount !== 0 && p2.leftAmount !== 0 && count < MAX_ROUNDS);
