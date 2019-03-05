@@ -1,10 +1,19 @@
 import {play} from './twentyOne'
 import {forEach} from './lodash'
+import Player from './twentyOne/Player';
+import Computer from './twentyOne/Computer';
 
 document.addEventListener('DOMContentLoaded', () => {
-    const twentyOne = play();
-    const {player, computer} = twentyOne.next().value;
 
+    const p1 = new Player({name: 'Player'});
+    const p2 = new Computer({name: 'Computer'});
+    const twentyOne = play(p1, p2);
+
+    const {round, player, computer} = twentyOne.next().value;
+
+    const deal = p1.deal();
+
+    const roundNumber = document.querySelector('#round');
     const player1More = document.querySelector('#playerMore');
     const player1Hold = document.querySelector('#playerHold');
     const player1Info = document.querySelector('#playerInfo');
@@ -12,16 +21,16 @@ document.addEventListener('DOMContentLoaded', () => {
     const computerInfo = document.querySelector('#computerInfo');
     const computerStatus = document.querySelector('#computerStatus');
 
-    moveCallback(player, computer);
+    moveCallback(round, player, computer);
 
-    document.querySelector('#player .name').innerText = player.name;
-    document.querySelector('#computer .name').innerText = computer.name;
+    document.querySelector('#player .name').innerText = p1.name;
+    document.querySelector('#computer .name').innerText = p2.name;
 
 
-    function moveCallback(player, computer) {
+    function moveCallback(round, player, computer) {
         const {cards, leftAmount, score} = player;
         const {cards: ccards, leftAmount: cleftAmount, score: cscore} = computer;
-
+        roundNumber.innerText = round;
         player1Info.innerHTML = renderCards(cards);
         player1Status.innerText = `left amount: ${leftAmount} \n score: ${score}`;
         computerInfo.innerHTML = renderCards(ccards);
@@ -29,13 +38,15 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     player1More.addEventListener('click', () => {
-        const {player, computer} =  twentyOne.next(true).value;
-        moveCallback(player, computer)
+        deal.next(true);
+        const {round, player, computer} =  twentyOne.next(true).value;
+        moveCallback(round, player, computer)
     });
 
     player1Hold.addEventListener('click', () => {
-        const {player, computer} =  twentyOne.next(false).value;
-        moveCallback(player, computer)
+        deal.next(false);
+        const {round, player, computer} =  twentyOne.next(false).value;
+        moveCallback(round, player, computer)
     })
 });
 

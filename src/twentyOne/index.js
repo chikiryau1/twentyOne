@@ -1,6 +1,7 @@
 import {shuffle} from '../deck'
 import Player from './Player'
 import Computer from './Computer'
+import TwentyOne from './store'
 
 const MAX_ROUNDS = 50;
 
@@ -31,53 +32,22 @@ const checkRoundWinner = (p1, p2) => {
     }
 };
 
-export function* play () {
-    const p1 = new Player({name: 'Player'});
-    const p2 = new Computer({name: 'Computer'});
+export function* play (p1, p2) {
+    const game = new TwentyOne(p1, p2);
     const deck = shuffle();
-    console.log(deck);
-    let more = yield {
-        player: {
-            name: p1.name,
-            cards: p1.cards,
-            leftAmount: p1.leftAmount,
-            score: p1.score
-        },
-        computer: {
-            name: p2.name,
-            cards: p2.cards,
-            leftAmount: p2.leftAmount,
-            score: p2.score
-        }
-    };
-
+    let more = yield game.roundStatus;
     let count = 0;
     do{
         count++;
 
-        p1.more = more;
         p1.lr = p2.lr = false;
 
-        if(p1.more) {
-            p1.addCard(deck.pop());
-        }
-
+        p1.more && p1.addCard(deck.pop());
         p2.makeDecision() && p2.addCard(deck.pop());
 
-        checkRoundWinner(p1, p2);
+        // checkRoundWinner(p1, p2);
 
-        more = yield {
-            player: {
-                cards: p1.cards,
-                leftAmount: p1.leftAmount,
-                score: p1.score
-            },
-            computer: {
-                cards: p2.cards,
-                leftAmount: p2.leftAmount,
-                score: p2.score
-            }
-        };
+        more = yield game.roundStatus
     } while(p1.leftAmount !== 0 && p2.leftAmount !== 0 && count < MAX_ROUNDS);
 
 }

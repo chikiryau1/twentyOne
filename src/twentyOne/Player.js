@@ -59,4 +59,10 @@ export default class Player{
             this.score = this.sum();
         }
     }
+
+    * deal () {
+        while(this.more){
+            this.more = yield this.more;
+        }
+    }
 }
