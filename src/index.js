@@ -40,6 +40,7 @@ document.addEventListener('DOMContentLoaded', () => {
     player1More.addEventListener('click', () => {
         deal.next(true);
         const {round, player, computer} =  twentyOne.next(true).value;
+
         moveCallback(round, player, computer)
     });
 

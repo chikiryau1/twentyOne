@@ -18,21 +18,17 @@ export default class Player{
     }
 
     lostRound(){
-        console.log(this.name, ' LOST');
         this.reset();
         this.leftAmount -= BET;
     }
 
     wonRound(){
-        console.log(this.name, ' WON');
         this.reset();
         this.leftAmount += BET;
     }
 
     reset () {
-        this.lr = false;
         this.cards = [];
-        this.more = true;
         this.score = 0;
     }
 
@@ -61,7 +57,7 @@ export default class Player{
     }
 
     * deal () {
-        while(this.more){
+        while(true){
             this.more = yield this.more;
         }
     }
